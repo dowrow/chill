@@ -10,9 +10,9 @@
 		#nebula {
 			top:0;
 			left:0;
+			width: 100%;
+			height: 100%;
 			position: absolute;
-			background-size: cover;
-			background-position: center;
 		}
 		#dark {
 			position: absolute;
@@ -20,7 +20,7 @@
 			height: 100%;
 			top: 0;
 			left: 0;
-			background-color: rgba(0,0,0,0.75);
+			background-color: rgba(0,0,0,0.5);
 		}
 		#music{
 			position: absolute;
@@ -49,7 +49,7 @@
 </head>
 <body>
 	
-	<div id="nebula"></div>
+	<canvas id="nebula"></canvas>
 	
 	<div id="dark"></div>
 	
@@ -97,35 +97,34 @@
 	];
 
 	var currentNebula = Math.floor(Math.random() * nebulas.length);
-	
+	var nebula = new Image();
+
 	$(document).ready(main);
 	
 	function main () {
-		resizeNebula();
-		setInterval(rotateNebula, 15);
+		nebula.src = nebulas[currentNebula];
+		setInterval(updateNebula, 15);
 		$('#quote').text(quotes[currentQuote]);
 		setInterval(showNewMantra, 25000);
-	}
-
-	function resizeNebula () {
-		var w = $(document).width();
-		var h = $(document).height();
-		var diagonal = Math.sqrt(Math.pow(w,2) + Math.pow(h,2));
-		$('#nebula').css('background-image', "url('" + nebulas[currentNebula] + "')");
-		$('#nebula').css('height', diagonal + 'px');
-		$('#nebula').css('width', diagonal + 'px');
-		$('#nebula').css('margin-top',  '-' + (diagonal - h)/2  + 'px');
-		$('#nebula').css('margin-left',  '-' + (diagonal - w)/2 + 'px');
+	
 	}
 
 	var rotation = 0;
-	function rotateNebula () {
-		rotation += 0.05;
-		$('#nebula').css({'-webkit-transform' : 'rotate('+ rotation +'deg)',
-                 '-moz-transform' : 'rotate('+ rotation +'deg)',
-                 '-ms-transform' : 'rotate('+ rotation +'deg)',
-                 'transform' : 'rotate('+ rotation +'deg)'});
+
+	function updateNebula () {
+		rotation += 0.001;
+		var w = $(document).width();
+		var h = $(document).height();
+		var diagonal = Math.sqrt(Math.pow(w,2) + Math.pow(h,2));
+		var ctx = document.getElementById('nebula').getContext('2d');
+		ctx.save();
+		ctx.translate(w/2, h/2);	
+		ctx.rotate(rotation);
+		ctx.translate(-w/2, -h/2);
+		ctx.drawImage(nebula, 0 - ((diagonal - w)/2), 0 - ((diagonal - h) / 2), diagonal, diagonal);		
+		ctx.restore();
 	}
+
 
 	function showNewMantra() {
 		currentQuote = (currentQuote + 1) % quotes.length;
