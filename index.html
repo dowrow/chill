@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Chill</title>
 	<style type="text/css">
 		body {
@@ -110,7 +111,7 @@
 		var w = $(document).width();
 		var h = $(document).height();
 		var diagonal = Math.sqrt(Math.pow(w,2) + Math.pow(h,2));
-		$('#nebula').css('background-image', "url('" + nebulas[currentNebula] + "')");
+		$('#nebula').css('background-image', "url('" + nebulas + "')");
 		$('#nebula').css('height', diagonal + 'px');
 		$('#nebula').css('width', diagonal + 'px');
 		$('#nebula').css('margin-top',  '-' + (diagonal - h)/2  + 'px');
